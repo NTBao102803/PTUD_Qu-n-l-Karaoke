@@ -4,6 +4,17 @@
  */
 package gui;
 
+import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.sql.Connection;
+
+import javax.swing.JFrame;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+
+import connectDB.ConnectDB;
+
 /**
  *
  * @author PC
@@ -13,8 +24,15 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
     /**
      * Creates new form JFrame_DangNhap
      */
+	Connection conn;
     public JFrame_DangNhap() {
+    	try {
+			ConnectDB.getInstance().connect();
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -179,13 +197,45 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Quên mật khẩu?");
+        jLabel7.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				lblQuenMatKhau(e);
+			}
+		});
 
         btnDangNhap.setBackground(new java.awt.Color(162, 74, 74));
         btnDangNhap.setFont(new java.awt.Font("Segoe UI", 1, 15)); // NOI18N
         btnDangNhap.setForeground(new java.awt.Color(255, 255, 255));
         btnDangNhap.setIcon(new javax.swing.ImageIcon("item/log-in25.png")); // NOI18N
         btnDangNhap.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(255, 255, 255), java.awt.Color.black));
-        btnDangNhap.setLabel("Đăng nhập");
+        btnDangNhap.setText("Đăng nhập");
         btnDangNhap.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDangNhapActionPerformed(evt);
@@ -263,48 +313,68 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtUser1ActionPerformed
 
-    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDangNhapActionPerformed
+    private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {
         // TODO add your handling code here:
-    }//GEN-LAST:event_btnDangNhapActionPerformed
+    	JFrame_GiaoDienChinh frm_QuanLy = new JFrame_GiaoDienChinh();
+		frm_QuanLy.setLocationRelativeTo(null);
+		frm_QuanLy.setVisible(true);
+		frm_QuanLy.setTitle("QL_Karaoke");
+		frm_QuanLy.setResizable(false);
+		frm_QuanLy.setDefaultCloseOperation(EXIT_ON_CLOSE);
+		frm_QuanLy.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));
+		frm_QuanLy.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		frm_QuanLy.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		this.dispose();
+    }
 
     private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnThoatActionPerformed
+    	System.exit(0);
+    }
+    private void lblQuenMatKhau(MouseEvent e) {
+    	JFrame_QuenMatKhau frm_QMK = new JFrame_QuenMatKhau();
+    	frm_QMK.setLocationRelativeTo(null);
+    	frm_QMK.setTitle("QL_Karaoke");
+    	frm_QMK.setResizable(false);
+    	frm_QMK.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    	frm_QMK.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));
+		frm_QMK.setVisible(true);
+    	this.dispose();
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new JFrame_DangNhap().setVisible(true);
-            }
-        });
-    }
+//    public static void main(String args[]) {
+//        /* Set the Nimbus look and feel */
+//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+//         */
+//        try {
+//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+//                if ("Nimbus".equals(info.getName())) {
+//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+//                    break;
+//                }
+//            }
+//        } catch (ClassNotFoundException ex) {
+//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (InstantiationException ex) {
+//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (IllegalAccessException ex) {
+//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+//        }
+//        //</editor-fold>
+//
+//        /* Create and display the form */
+//        java.awt.EventQueue.invokeLater(new Runnable() {
+//            public void run() {
+//                new JFrame_DangNhap().setVisible(true);
+//            }
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDangNhap;

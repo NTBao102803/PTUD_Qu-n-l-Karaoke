@@ -4,16 +4,32 @@
  */
 package gui;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
+import connectDB.ConnectDB;
+import dao.Phong_DAO;
+import entity.PhongHat;
+
 /**
  *
  * @author PC
  */
 public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
-    /**
+    private Phong_DAO phong_dao;
+	private ArrayList<PhongHat> listPhong;
+	/**
      * Creates new form JPanel_DanhMucPhong
      */
     public JPanel_DanhMucPhong() {
+		try {
+			ConnectDB.getInstance().connect();
+		} catch (SQLException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}
+		phong_dao = new Phong_DAO();
         initComponents();
     }
 
@@ -262,6 +278,15 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
     }//GEN-LAST:event_jComboBoxTinhTrangActionPerformed
 
 
+    // đọc dữ liệu vào bảng phòng
+//    public void loadPhong() {
+//		listPhong = phong_dao.getAllPhong();
+//		for (PhongHat ph : listPhong) {
+//			jTableDanhSachPhong.add(new Object[] { ph.getMaPhongHat(), ph.getLoaiPhong(), ph.getTinhTrang(), ph.getGiaPhong() });
+//		}
+//	}
+    
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCapNhat;
     private javax.swing.JButton jButtonLamMoi;
