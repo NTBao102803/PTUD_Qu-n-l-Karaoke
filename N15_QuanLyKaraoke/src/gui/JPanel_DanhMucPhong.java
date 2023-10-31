@@ -7,8 +7,12 @@ package gui;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import javax.swing.table.DefaultTableModel;
+
 import connectDB.ConnectDB;
+import dao.LoaiPhong_DAO;
 import dao.Phong_DAO;
+import entity.LoaiPhong;
 import entity.PhongHat;
 
 /**
@@ -19,6 +23,8 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
     private Phong_DAO phong_dao;
 	private ArrayList<PhongHat> listPhong;
+	private DefaultTableModel mode_Phong;
+	private LoaiPhong_DAO loaiPhong_dao;
 	/**
      * Creates new form JPanel_DanhMucPhong
      */
@@ -30,6 +36,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 			e.printStackTrace();
 		}
 		phong_dao = new Phong_DAO();
+		loaiPhong_dao = new LoaiPhong_DAO();
         initComponents();
     }
 
@@ -94,7 +101,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         jTextFieldTenPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jComboBoxTinhTrang.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBoxTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Trống", "Đang sử dụng", " " }));
+        jComboBoxTinhTrang.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select--","Trống", "Đang sử dụng", "Phòng chờ" }));
         jComboBoxTinhTrang.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jComboBoxTinhTrangActionPerformed(evt);
@@ -114,8 +121,16 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         jComboBoxSucChua.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "15", "20" }));
 
         jComboBoxLoaiPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBoxLoaiPhong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Vip", "Thường", " " }));
-
+        jComboBoxLoaiPhong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select--" }));
+		/* Đổ dữ liệu lên comboBox */
+		ArrayList<LoaiPhong> listLoaiPhong = loaiPhong_dao.getAllLoaiPhong();
+		for (LoaiPhong lp : listLoaiPhong) {
+			jComboBoxLoaiPhong.addItem(lp.getTenLoaiPhong());
+		}
+        
+        
+        
+        
         jTextFieldGiaPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
 
         jButtonThem.setBackground(java.awt.SystemColor.controlHighlight);
@@ -218,23 +233,9 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
         jTableDanhSachPhong.setBackground(new java.awt.Color(242, 242, 242));
         jTableDanhSachPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jTableDanhSachPhong.setModel(new javax.swing.table.DefaultTableModel(
+//        mode_Phong = new DefaultTableModel();
+        jTableDanhSachPhong.setModel(mode_Phong = new DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
             },
             new String [] {
                 "Mã phòng", "Tên phòng", "Loại phòng", "Giá phòng", "Tình trạng", "Sức chứa"
@@ -252,7 +253,10 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         jTableDanhSachPhong.setSelectionBackground(new java.awt.Color(204, 204, 204));
         jTableDanhSachPhong.setShowGrid(true);
         jScrollPane1.setViewportView(jTableDanhSachPhong);
-
+        // load tất cả các phòng
+        loadPhong();
+        
+        
         javax.swing.GroupLayout jPanelLastLayout = new javax.swing.GroupLayout(jPanelLast);
         jPanelLast.setLayout(jPanelLastLayout);
         jPanelLastLayout.setHorizontalGroup(
@@ -279,12 +283,16 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
 
     // đọc dữ liệu vào bảng phòng
-//    public void loadPhong() {
-//		listPhong = phong_dao.getAllPhong();
-//		for (PhongHat ph : listPhong) {
-//			jTableDanhSachPhong.add(new Object[] { ph.getMaPhongHat(), ph.getLoaiPhong(), ph.getTinhTrang(), ph.getGiaPhong() });
-//		}
-//	}
+    public void loadPhong() {
+		listPhong = phong_dao.getAllPhong();
+		for (PhongHat ph : listPhong) {
+			mode_Phong.addRow(new Object[] { 
+					ph.getMaPhongHat(), ph.getTenPhongHat() ,
+					ph.getLoaiPhong().getTenLoaiPhong(),
+					ph.getGiaPhong(), ph.getTinhTrang(), 
+					ph.getSucChua() });
+		}
+	}
     
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -8,7 +8,7 @@ import java.sql.Statement;
 import connectDB.ConnectDB;
 import entity.LoaiPhong;
 public class LoaiPhong_DAO {
-	public ArrayList<LoaiPhong> getAlltbCauLacBo() {
+	public ArrayList<LoaiPhong> getAllLoaiPhong() {
 		ArrayList<LoaiPhong> dsLP = new ArrayList<LoaiPhong>();
 		try {
 			ConnectDB.getInstance();

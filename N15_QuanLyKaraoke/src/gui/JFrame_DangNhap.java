@@ -10,10 +10,15 @@ import java.awt.event.MouseListener;
 import java.sql.Connection;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.event.AncestorEvent;
 import javax.swing.event.AncestorListener;
 
 import connectDB.ConnectDB;
+import dao.NhanVien_DAO;
+import dao.TaiKhoan_DAO;
+import entity.NhanVien;
+import entity.TaiKhoan;
 
 /**
  *
@@ -21,9 +26,8 @@ import connectDB.ConnectDB;
  */
 public class JFrame_DangNhap extends javax.swing.JFrame {
 
-    /**
-     * Creates new form JFrame_DangNhap
-     */
+	private TaiKhoan_DAO taiKhoan_dao;
+	private NhanVien_DAO nhanVien_dao;
 	Connection conn;
     public JFrame_DangNhap() {
     	try {
@@ -31,6 +35,8 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
+    	taiKhoan_dao = new TaiKhoan_DAO();
+    	nhanVien_dao = new NhanVien_DAO();
         initComponents();
         setLocationRelativeTo(null);
     }
@@ -185,6 +191,9 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
         jLabel3.setText("Mật khẩu:");
 
         txtUser.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
+        txtUser.setText("bao1028");
+        
+        
         txtUser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 txtUserActionPerformed(evt);
@@ -193,7 +202,8 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
 
         txtPass.setFont(new java.awt.Font("Segoe UI", 0, 15)); // NOI18N
         txtPass.setToolTipText("");
-
+        txtPass.setText("bao123");
+        
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel7.setForeground(new java.awt.Color(255, 255, 255));
         jLabel7.setText("Quên mật khẩu?");
@@ -314,17 +324,7 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
     }//GEN-LAST:event_txtUser1ActionPerformed
 
     private void btnDangNhapActionPerformed(java.awt.event.ActionEvent evt) {
-        // TODO add your handling code here:
-    	JFrame_GiaoDienChinh frm_QuanLy = new JFrame_GiaoDienChinh();
-		frm_QuanLy.setLocationRelativeTo(null);
-		frm_QuanLy.setVisible(true);
-		frm_QuanLy.setTitle("QL_Karaoke");
-		frm_QuanLy.setResizable(false);
-		frm_QuanLy.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		frm_QuanLy.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));
-		frm_QuanLy.setSize(Toolkit.getDefaultToolkit().getScreenSize());
-		frm_QuanLy.setExtendedState(JFrame.MAXIMIZED_BOTH);
-		this.dispose();
+    	dangNhap();
     }
 
     private void btnThoatActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnThoatActionPerformed
@@ -341,40 +341,44 @@ public class JFrame_DangNhap extends javax.swing.JFrame {
     	this.dispose();
     }
 
-    /**
-     * @param args the command line arguments
-     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(JFrame_DangNhap.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new JFrame_DangNhap().setVisible(true);
-//            }
-//        });
-//    }
+    public void dangNhap() {
+    	String taiKhoan = txtUser.getText().trim();
+    	String matKhau = txtPass.getText().trim();
+    	TaiKhoan tk = taiKhoan_dao.getTaiKHoanTheoTenDN(taiKhoan);
+    	if (tk == null) 
+    		JOptionPane.showMessageDialog(this, "Tài khoản không tồn tại!");
+    	else if (!tk.getMatKhau().equalsIgnoreCase(matKhau)) {
+    		JOptionPane.showMessageDialog(this, "Mật khẩu không đúng!\nVui lòng kiểm tra lại.");
+    	}
+    	else {
+    		JOptionPane.showMessageDialog(this, "Đăng nhập thành công");
+    		NhanVien nv = nhanVien_dao.getNVtheoMa(tk.getNhanVien().getMaNhanVien());
+    		if (nv.getChucVu().equalsIgnoreCase("Quản lý")) {
+    			JFrame_GiaoDien_QuanLy frm_QuanLy = new JFrame_GiaoDien_QuanLy(nv);
+    			frm_QuanLy.setLocationRelativeTo(null);
+    			frm_QuanLy.setVisible(true);
+    			frm_QuanLy.setTitle("QL_Karaoke");
+    			frm_QuanLy.setResizable(false);
+    			frm_QuanLy.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    			frm_QuanLy.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));
+    			frm_QuanLy.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+    			frm_QuanLy.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    			this.dispose();
+			} else {
+    			JFrame_GiaoDien_NhanVien frm_NhanVien = new JFrame_GiaoDien_NhanVien(nv);
+    			frm_NhanVien.setLocationRelativeTo(null);
+    			frm_NhanVien.setVisible(true);
+    			frm_NhanVien.setTitle("QL_Karaoke");
+    			frm_NhanVien.setResizable(false);
+    			frm_NhanVien.setDefaultCloseOperation(EXIT_ON_CLOSE);
+    			frm_NhanVien.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));
+    			frm_NhanVien.setSize(Toolkit.getDefaultToolkit().getScreenSize());
+    			frm_NhanVien.setExtendedState(JFrame.MAXIMIZED_BOTH);
+    			this.dispose();
+			}
+
+    	}
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnDangNhap;
