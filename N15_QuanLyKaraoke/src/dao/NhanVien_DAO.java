@@ -72,4 +72,24 @@ public class NhanVien_DAO {
 		}
 		return nv;
 	}
+	// tìm nhân viên theo tên đăng nhập
+	public NhanVien timNhanVienTheoTaiKhoan(String user) {
+		ConnectDB.getInstance();
+		Connection con = ConnectDB.getConnection();
+		String sql = "Select nv.MaNhanVien, TenNhanVien, NgaySinh, SoDienThoai, CCCD, GioiTinh, DiaChi, ChucVu, TrangThai from tbl_NhanVien nv join tbl_TaiKhoan tk on nv.MaNhanVien = tk.MaNhanVien where TenDangNhap = ?";
+		try {
+			PreparedStatement stmt = con.prepareStatement(sql);
+			stmt.setString(1, user);
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()) {
+				NhanVien nv = new NhanVien(rs.getString("MaNhanVien"));
+				return nv;
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+				
+	}
 }

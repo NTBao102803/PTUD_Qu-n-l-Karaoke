@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import entity.NhanVien;
+import entity.TaiKhoan;
 import form.MenuItem;
 
 import java.awt.BorderLayout;
@@ -40,6 +41,10 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
 	private JPanel_TraCuuDichVu traCuuDichVu;
 	private JPanel_TraCuuPhong traCuuPhongHat;
 	private NhanVien nv;
+
+	private JPanel_ThanhToanHoaDon thanhToanHoaDon;
+
+	private JPanel_TraCuuHoaDon traCuuHoaDon;
     /**
      * Creates new form JFrame_GiaoDienChinh
      */
@@ -52,7 +57,9 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
         phongHat = new JPanel_DanhMucPhong();
         traCuuDichVu = new JPanel_TraCuuDichVu();
         traCuuPhongHat = new JPanel_TraCuuPhong();
-        
+        thanhToanHoaDon = new JPanel_ThanhToanHoaDon();
+        traCuuHoaDon = new JPanel_TraCuuHoaDon();
+       
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
         
@@ -60,8 +67,8 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
         mainPanel.add(phongHat, "Danh mục phòng hát");
         mainPanel.add(traCuuDichVu, "Tra cứu dịch vụ");
         mainPanel.add(traCuuPhongHat, "Tra cứu phòng hát");
-        
-        
+        mainPanel.add(thanhToanHoaDon, "Thanh toán hóa đơn");
+        mainPanel.add(traCuuHoaDon, "Tra cứu hóa đơn");
         execute();
         jPanelbody.add(mainPanel, BorderLayout.CENTER);
     }
@@ -344,6 +351,8 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
               	  menuKhachHangTiemNang.setBackground(Color.white);
               	  menuDoanhThuTheoNgay.setBackground(Color.white);
               	  menuDoanhThuTheoThang.setBackground(Color.white);
+              	  
+              	  cardLayout.show(mainPanel, "Thanh toán hóa đơn");
               }
           });
         menuXuLy = new MenuItem(iconXuLy, "Xử lý", new ActionListener() {
@@ -544,6 +553,8 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
               	  menuKhachHangTiemNang.setBackground(Color.white);
               	  menuDoanhThuTheoNgay.setBackground(Color.white);
               	  menuDoanhThuTheoThang.setBackground(Color.white);
+              	  
+              	  cardLayout.show(mainPanel, "Tra cứu hóa đơn");
               }
           });
         menuTraCuu = new MenuItem(iconTraCuu, "Tra cứu", new ActionListener() {
@@ -892,7 +903,7 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Nguyễn Thái Bảo");
+        jLabel2.setText(nv.getTenNhanVien().toString());
 
         jButtonDoiMatKhau.setBackground(new java.awt.Color(162, 74, 74));
         jButtonDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -990,6 +1001,8 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
     private javax.swing.JPanel jPanelbody;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menus;
+
+	private TaiKhoan tk;
     // End of variables declaration//GEN-END:variables
     
     private void JButtonDangXuat(ActionEvent e) {
@@ -1002,7 +1015,7 @@ public class JFrame_GiaoDien_QuanLy extends javax.swing.JFrame {
 		login.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
     private void JButtonDoiMatKhau(ActionEvent e) {
-		JFrame_DoiMatKhau doiMatKhau = new JFrame_DoiMatKhau();
+		JFrame_DoiMatKhau doiMatKhau = new JFrame_DoiMatKhau(tk);
 		doiMatKhau.setVisible(true);
 		doiMatKhau.setLocationRelativeTo(null);
 		doiMatKhau.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));

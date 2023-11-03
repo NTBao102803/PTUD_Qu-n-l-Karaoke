@@ -8,6 +8,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import dao.NhanVien_DAO;
+import dao.TaiKhoan_DAO;
+import entity.NhanVien;
+import entity.TaiKhoan;
 
 /**
  *
@@ -15,21 +21,60 @@ import javax.swing.JFrame;
  */
 public class JFrame_DoiMatKhau extends javax.swing.JFrame {
 
-    /**
+    private NhanVien nv;
+	private NhanVien_DAO nhanVien_dao;
+	private TaiKhoan tk;
+	private TaiKhoan_DAO taiKhoan_dao;
+	/**
      * Creates new form JFrame_DoiMatKhau
      */
-    public JFrame_DoiMatKhau() {
+    public JFrame_DoiMatKhau(TaiKhoan tk) {
     	setResizable(false);
+    	this.tk = tk;
+    	nhanVien_dao = new NhanVien_DAO();
+    	taiKhoan_dao = new TaiKhoan_DAO();
     	setUndecorated(true); // tắt thanh tiêu đề
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         initComponents();
         addControls();
+       
     }
     private void addControls() {
 		btnHuy.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				setVisible(false);
+			}
+		});
+		btnXacNhan.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String mkCu = String.valueOf(jPasswordFieldMKCu.getPassword());
+				String mkMoi = String.valueOf(jPasswordFieldMKMoi.getPassword());
+				String mkXacNhan = String.valueOf(jPasswordFieldXacNhan.getPassword());
+				if (!mkMoi.equals(mkXacNhan)) {
+
+					JOptionPane.showMessageDialog(null, "Mật khẩu xác nhận không trùng!!!", "Lỗi",
+							JOptionPane.ERROR_MESSAGE);
+				} else if (!mkCu.equals(tk.getMatKhau())) {
+					JOptionPane.showMessageDialog(null, "Mật khẩu cũ không chính xác!!", "Lỗi",
+							JOptionPane.ERROR_MESSAGE);
+				} else {
+					tk.setMatKhau(mkMoi);
+					;
+					try {
+						JOptionPane.showMessageDialog(null, "Đổi mật khẩu thành công!!");
+//						tk = tk.timNhanVienTheoTaiKhoan(nv.getUserName());
+						tk.setMatKhau(mkMoi);
+//						nhanvien_dao.doiMatKhau(nv);
+
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					setVisible(false);
+				}
 			}
 		});
     }

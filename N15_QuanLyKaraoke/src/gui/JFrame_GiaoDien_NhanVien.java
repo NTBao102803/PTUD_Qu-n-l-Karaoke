@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import entity.NhanVien;
+import entity.TaiKhoan;
 import form.MenuItem;
 
 import java.awt.BorderLayout;
@@ -718,7 +719,7 @@ public class JFrame_GiaoDien_NhanVien extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Nguyễn Thái Bảo");
+        jLabel2.setText(nv.getTenNhanVien().toString());
 
         jButtonDoiMatKhau.setBackground(new java.awt.Color(162, 74, 74));
         jButtonDoiMatKhau.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
@@ -817,6 +818,8 @@ public class JFrame_GiaoDien_NhanVien extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel menus;
     // End of variables declaration//GEN-END:variables
+
+	private TaiKhoan tk;
     
     private void JButtonDangXuat(ActionEvent e) {
 		this.setVisible(false);
@@ -828,7 +831,7 @@ public class JFrame_GiaoDien_NhanVien extends javax.swing.JFrame {
 		login.setDefaultCloseOperation(EXIT_ON_CLOSE);
 	}
     private void JButtonDoiMatKhau(ActionEvent e) {
-		JFrame_DoiMatKhau doiMatKhau = new JFrame_DoiMatKhau();
+		JFrame_DoiMatKhau doiMatKhau = new JFrame_DoiMatKhau(tk);
 		doiMatKhau.setVisible(true);
 		doiMatKhau.setLocationRelativeTo(null);
 		doiMatKhau.setIconImage(Toolkit.getDefaultToolkit().getImage("item\\1490859831_home_16x16.gif"));

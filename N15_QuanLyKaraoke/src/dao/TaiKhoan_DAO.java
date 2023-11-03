@@ -62,4 +62,21 @@ public class TaiKhoan_DAO {
 		}
 		return tk;
 	}
+	// đổi mật khẩu
+//	public boolean doiMatKhau(TaiKhoan tk) throws SQLException {
+//		ConnectDB.getInstance();
+//		Connection con = ConnectDB.getConnection();
+//		if(timNhanVienTheoTaiKhoan(tk.getTenDangNhap())!=null){	
+//			String sql = "UPDATE tbl_NhanVien "
+//					+ "   SET MatKhau = ? "
+//					+ " WHERE  TenDangNhap = ? ";
+//			try(PreparedStatement stmt = con.prepareStatement(sql)){
+//				stmt.setString(1, nv.getPassWord());
+//				stmt.setString(2, nv.getUserName());
+//				int n = stmt.executeUpdate();
+//				return n>0;
+//			}		
+//		}
+//		return false;
+//	}
 }

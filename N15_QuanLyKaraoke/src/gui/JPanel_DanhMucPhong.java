@@ -4,9 +4,18 @@
  */
 package gui;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Random;
 
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.border.Border;
 import javax.swing.table.DefaultTableModel;
 
 import connectDB.ConnectDB;
@@ -23,8 +32,8 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
     private Phong_DAO phong_dao;
 	private ArrayList<PhongHat> listPhong;
-	private DefaultTableModel mode_Phong;
 	private LoaiPhong_DAO loaiPhong_dao;
+	private DefaultTableModel model_Phong;
 	/**
      * Creates new form JPanel_DanhMucPhong
      */
@@ -118,8 +127,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         jLabelSucChua.setText("Sức chứa:");
 
         jComboBoxSucChua.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jComboBoxSucChua.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "5", "6", "7", "8", "9", "10", "15", "20" }));
-
+        jComboBoxSucChua.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select--" , "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20"}));
         jComboBoxLoaiPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jComboBoxLoaiPhong.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "--Select--" }));
 		/* Đổ dữ liệu lên comboBox */
@@ -137,22 +145,56 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         jButtonThem.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonThem.setIcon(new javax.swing.ImageIcon("item/add25.png")); // NOI18N
         jButtonThem.setText("Thêm");
-
+        jButtonThem.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				addnew_Phong();
+			}
+		});
+        
+        
         jButtonCapNhat.setBackground(java.awt.SystemColor.controlHighlight);
         jButtonCapNhat.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonCapNhat.setIcon(new javax.swing.ImageIcon("item/update25.png")); // NOI18N
         jButtonCapNhat.setText("Cập nhật");
-
+        jButtonCapNhat.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				edit_Phong();
+			}
+		});
+        
         jButtonXoa.setBackground(java.awt.SystemColor.controlHighlight);
         jButtonXoa.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonXoa.setIcon(new javax.swing.ImageIcon("item/delete25.png")); // NOI18N
         jButtonXoa.setText("Xóa");
-
+        jButtonXoa.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				deletePhong();
+			}
+		});
+        
         jButtonLamMoi.setBackground(java.awt.SystemColor.controlHighlight);
         jButtonLamMoi.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jButtonLamMoi.setIcon(new javax.swing.ImageIcon("item/refresh25.png")); // NOI18N
         jButtonLamMoi.setText("Làm mới");
-
+        jButtonLamMoi.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				clear_Phong();
+			}
+		});
+        
+        
         javax.swing.GroupLayout jPanelBodyLayout = new javax.swing.GroupLayout(jPanelBody);
         jPanelBody.setLayout(jPanelBodyLayout);
         jPanelBodyLayout.setHorizontalGroup(
@@ -226,6 +268,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
+
         add(jPanelBody, java.awt.BorderLayout.CENTER);
 
         jPanelLast.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Danh sách phòng hát", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 0, 14))); // NOI18N
@@ -233,8 +276,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
 
         jTableDanhSachPhong.setBackground(new java.awt.Color(242, 242, 242));
         jTableDanhSachPhong.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-//        mode_Phong = new DefaultTableModel();
-        jTableDanhSachPhong.setModel(mode_Phong = new DefaultTableModel(
+        jTableDanhSachPhong.setModel(model_Phong = new DefaultTableModel(
             new Object [][] {
             },
             new String [] {
@@ -256,6 +298,48 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         // load tất cả các phòng
         loadPhong();
         
+        jTableDanhSachPhong.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				// TODO Auto-generated method stub
+				int pos = jTableDanhSachPhong.getSelectedRow();
+				jTextFieldMaPhong.setText(model_Phong.getValueAt(pos, 0).toString());
+				jTextFieldMaPhong.setEnabled(false);
+				jTextFieldTenPhong.setText(model_Phong.getValueAt(pos, 1).toString());
+				jComboBoxLoaiPhong.setSelectedItem(model_Phong.getValueAt(pos, 2));
+				jTextFieldGiaPhong.setText(model_Phong.getValueAt(pos, 3).toString());
+				jComboBoxTinhTrang.setSelectedItem(model_Phong.getValueAt(pos, 4));
+				
+				String number = jTableDanhSachPhong.getValueAt(pos, 5).toString();
+				jComboBoxSucChua.setSelectedItem(number);
+			}
+
+		});
         
         javax.swing.GroupLayout jPanelLastLayout = new javax.swing.GroupLayout(jPanelLast);
         jPanelLast.setLayout(jPanelLastLayout);
@@ -270,7 +354,7 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
             jPanelLastLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelLastLayout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -281,19 +365,200 @@ public class JPanel_DanhMucPhong extends javax.swing.JPanel {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTinhTrangActionPerformed
 
-
+	// Check dữ liệu
+	Border bdFalse = BorderFactory.createLineBorder(Color.red);
+	Border bdTrue = BorderFactory.createLineBorder(Color.green);
     // đọc dữ liệu vào bảng phòng
     public void loadPhong() {
+    	model_Phong.setRowCount(0);
 		listPhong = phong_dao.getAllPhong();
 		for (PhongHat ph : listPhong) {
-			mode_Phong.addRow(new Object[] { 
+			model_Phong.addRow(new Object[] { 
 					ph.getMaPhongHat(), ph.getTenPhongHat() ,
 					ph.getLoaiPhong().getTenLoaiPhong(),
 					ph.getGiaPhong(), ph.getTinhTrang(), 
 					ph.getSucChua() });
 		}
 	}
+    // thêm phòng 
+	private void addnew_Phong() {
+		if (validDataPhong()) {
+			PhongHat p = revertPhong();
+			phong_dao.addPhong(p);
+			JOptionPane.showMessageDialog(this, "Thêm thành công!");
+			model_Phong.setRowCount(0);
+			loadPhong();
+			clear_Phong();
+		}
+	}
+
+	// cập nhật phòng
+	public void edit_Phong() {
+		int row = jTableDanhSachPhong.getSelectedRow();
+		if (jTextFieldMaPhong.getText().equals("")) {
+			JOptionPane.showMessageDialog(this, "Bạn chưa chọn phòng để cập nhật thông tin!");
+		} else {
+			int choice = JOptionPane.showConfirmDialog(null, "Ban có chắc chắn muốn cập nhật không ?");
+			if (choice == JOptionPane.YES_OPTION) {
+				if (validDataPhong()) {
+					String ma = jTextFieldMaPhong.getText().trim();
+					PhongHat p = update_Phong(ma);
+//					model_Phong.setValueAt(p.getTenPhongHat(), row, 1);
+//					model_Phong.setValueAt(p.getLoaiPhong().getTenLoaiPhong(), row, 2);
+//					model_Phong.setValueAt(p.getGiaPhong(), row, 3);
+//					model_Phong.setValueAt(p.getTinhTrang(), row, 4);
+//					model_Phong.setValueAt(p.getSucChua(), row, 5);
+					phong_dao.capNhat_PhongHat(p);
+					loadPhong();
+					clear_Phong();
+					JOptionPane.showMessageDialog(null, "Cập nhật hoàn tất!");
+				}
+			}
+		}
+	}
+    // tạo 1 phòng
+	public PhongHat revertPhong() {
+		// TODO Auto-generated method stub
+		String ma = generateCode();
+		int count = phong_dao.kiemTraMa(ma);
+		if (count > 0) {
+			ma = generateCode();
+		}
+		String tenPhong = jTextFieldTenPhong.getText().trim();
+		String loai = jComboBoxLoaiPhong.getSelectedItem().toString();
+		String maLoaiPhong = loaiPhong_dao.getMaLoaiPTheoTen(loai);
+		String tt = jComboBoxTinhTrang.getSelectedItem().toString();
+		double gia = Float.parseFloat(jTextFieldGiaPhong.getText());
+		int sucChua = Integer.parseInt(jComboBoxSucChua.getSelectedItem().toString());
+		return new PhongHat(ma, tenPhong, new LoaiPhong(maLoaiPhong, loai), gia, tt, sucChua);
+		
+	}
+	// cập nhật 1 phòng
+	public PhongHat update_Phong(String ma) {
+		String tenPhong = jTextFieldTenPhong.getText().trim();
+		String loai = jComboBoxLoaiPhong.getSelectedItem().toString();
+		String maLoaiPhong = loaiPhong_dao.getMaLoaiPTheoTen(loai);
+		String tt = jComboBoxTinhTrang.getSelectedItem().toString();
+		double gia = Float.parseFloat(jTextFieldGiaPhong.getText());
+		int sucChua = Integer.parseInt(jComboBoxSucChua.getSelectedItem().toString());
+		return new PhongHat(ma, tenPhong, new LoaiPhong(maLoaiPhong, loai), gia, tt, sucChua);
+		
+	}
+    // kiểm tra thông tin nhập vào 
+    public boolean validDataPhong() {
+		// TODO Auto-generated method stub
+    	String tenPhong = jTextFieldTenPhong.getText().trim();
+		String loai = jComboBoxLoaiPhong.getSelectedItem().toString();
+		String tt = jComboBoxTinhTrang.getSelectedItem().toString();
+		String gia = jTextFieldGiaPhong.getText().trim();
+		String sucChua = jComboBoxSucChua.getSelectedItem().toString();
+
+
+		if (tenPhong.length() > 0 || !tenPhong.equals("")) {
+			if (!tenPhong.matches("[0-9]{3}")) {
+				JOptionPane.showMessageDialog(this, "Error: Tên phòng phải theo mẫu: là 1 dãy gồm 3 số");
+				jTextFieldTenPhong.requestFocus(true);
+				jTextFieldTenPhong.setBorder(bdFalse);
+				return false;
+			} else {
+				jTextFieldTenPhong.setBorder(bdTrue);
+			}
+		} else {
+			JOptionPane.showMessageDialog(this, "Error: Chưa nhập tên phòng!");
+			jTextFieldTenPhong.requestFocus(true);
+			jTextFieldTenPhong.setBorder(bdFalse);
+			return false;
+		}
+
+
+		// check loại phòng
+		if (loai.equals("--Select--")) {
+			JOptionPane.showMessageDialog(this, "Error: Chưa chọn loại phòng!");
+			return false;
+		}
+
+		// check tình trạng phòng
+		if (tt.equals("--Select--")) {
+			JOptionPane.showMessageDialog(this, "Error: Chưa chọn tình trạng phòng!");
+			return false;
+		}
+
+		// Check gia phòng
+		if (gia.equals("")) {
+			JOptionPane.showMessageDialog(this, "Error: Chưa nhập giá!");
+			jTextFieldGiaPhong.requestFocus(true);
+			jTextFieldGiaPhong.setBorder(bdFalse);
+			return false;
+		} else {
+			if (!gia.matches("[0-9]+\\.{0,1}[0-9]*")) {
+				JOptionPane.showMessageDialog(this, "Error: Giá là giá trị số!");
+				jTextFieldGiaPhong.requestFocus(true);
+				jTextFieldGiaPhong.setBorder(bdFalse);
+				return false;
+			} else {
+				jTextFieldGiaPhong.setBorder(bdTrue);
+			}
+		}
+		// check sức chứa
+		if (sucChua.equals("--Select--")) {
+			JOptionPane.showMessageDialog(this, "Error: Chưa chọn Sức chứa!");
+			return false;
+		}
+		return true;
+	}
     
+    
+    // làm mới 
+	public void clear_Phong() {
+		jTextFieldMaPhong.setText("");
+		jTextFieldTenPhong.setText("");
+		jComboBoxLoaiPhong.setSelectedIndex(0);
+		jComboBoxTinhTrang.setSelectedIndex(0);
+		jComboBoxSucChua.setSelectedIndex(0);
+		jTextFieldGiaPhong.setText("");
+		jTextFieldGiaPhong.setBorder(null);
+	}
+    // phát sinh mã
+	public String generateCode() {
+        // Khởi tạo một biến để lưu trữ mã
+        String maPhongHat = "";
+        String prefix;
+        // Tạo một biến ngẫu nhiên
+        Random random = new Random();
+
+        // Lấy ngẫu nhiên một tiền tố
+        String loaiPhong = jComboBoxLoaiPhong.getSelectedItem().toString();
+        if (loaiPhong.equalsIgnoreCase("Vip"))
+        	prefix = "PHV";
+        else 
+        	prefix = "PHT";
+
+        // Tạo một chuỗi gồm 3 số ngẫu nhiên
+        for (int i = 0; i < 3; i++) {
+        	maPhongHat += random.nextInt(10);
+        }
+
+        return prefix + maPhongHat;
+    }
+	// xóa phòng
+	public void deletePhong() {
+		int row = jTableDanhSachPhong.getSelectedRow();
+		String maPhong = jTextFieldMaPhong.getText();
+		if (maPhong.equals("")) {
+			JOptionPane.showMessageDialog(null, "Vui lòng chọn phòng để xóa!");
+		} else {
+			int choice = JOptionPane.showConfirmDialog(null, "Bạn có chắc muốn xóa không ?", maPhong,
+					JOptionPane.YES_NO_CANCEL_OPTION);
+			if (choice == JOptionPane.YES_OPTION) {
+				model_Phong.removeRow(row);
+				phong_dao.delete_Phong(maPhong);
+				JOptionPane.showMessageDialog(null, "Xóa xong!");
+				clear_Phong();
+			} else {
+				JOptionPane.showMessageDialog(null, "Error!");
+			}
+		}
+	}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCapNhat;
